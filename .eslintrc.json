@@ -21,7 +21,9 @@
         "function-paren-newline": "error",
         "guard-for-in": "error",
         "handle-callback-err": "error",
-        "indent": "error",
+        "indent": ["error", 4, {
+            "SwitchCase": 1
+        }],
         "key-spacing": "error",
         "keyword-spacing": "error",
         "max-len": ["error", {

@@ -4,9 +4,9 @@ import "./App.css";
 
 const App: React.FC = () => (
     <Container>
-        <Col md={{span: 10, offset: 1}}>
+        <Col>
             <Jumbotron>
-                <h1 className="text-center">My Demo App</h1>
+                <h1 className="text-center">Purchase Tracker</h1>
             </Jumbotron>
         </Col>
     </Container>

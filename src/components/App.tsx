@@ -4,6 +4,7 @@ import {Container, Col, Jumbotron} from "react-bootstrap";
 import {BrowserRouter, Route, Redirect} from "react-router-dom";
 import Baskets from "components/Baskets";
 import Login from "components/Login";
+import Navigation from "components/Navigation";
 import "components/App.css";
 import {State} from "modules";
 import {selectIsUserAuthorized} from "modules/user/userSelectors";
@@ -27,6 +28,8 @@ function App({authorized}: AppProps) {
 
     const authorizedApp = (
         <BrowserRouter>
+            <Navigation />
+            {title}
             <Route exact
                 path="/baskets"
                 component={Baskets} />
@@ -36,6 +39,7 @@ function App({authorized}: AppProps) {
 
     const unauthorizedApp = (
         <BrowserRouter>
+            {title}
             <Route path="/login"
                 component={Login} />
             <Redirect to="login" />
@@ -45,7 +49,6 @@ function App({authorized}: AppProps) {
     return (
         <Container>
             <Col>
-                {title}
                 { authorized
                     ? authorizedApp
                     : unauthorizedApp

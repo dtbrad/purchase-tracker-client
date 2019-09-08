@@ -1,6 +1,7 @@
 import {connect} from "react-redux";
 import React from "react";
 import {Container, Col, Jumbotron} from "react-bootstrap";
+import {BrowserRouter, Route, Redirect} from "react-router-dom";
 import Baskets from "components/Baskets";
 import Login from "components/Login";
 import "components/App.css";
@@ -20,12 +21,26 @@ type AppProps = {
 function App({authorized}: AppProps) {
     const title = (
         <Jumbotron>
-            <h1 className="text-center">Purchase Tracler</h1>
+            <h1 className="text-center">Purchase Tracker</h1>
         </Jumbotron>
     );
 
-    const authorizedApp = <Baskets />;
-    const unAuthorizedApp = <Login />;
+    const authorizedApp = (
+        <BrowserRouter>
+            <Route exact
+                path="/baskets"
+                component={Baskets} />
+            <Redirect to="/baskets" />
+        </BrowserRouter>
+    );
+
+    const unauthorizedApp = (
+        <BrowserRouter>
+            <Route path="/login"
+                component={Login} />
+            <Redirect to="login" />
+        </BrowserRouter>
+    );
 
     return (
         <Container>
@@ -33,7 +48,7 @@ function App({authorized}: AppProps) {
                 {title}
                 { authorized
                     ? authorizedApp
-                    : unAuthorizedApp
+                    : unauthorizedApp
                 }
             </Col>
         </Container>

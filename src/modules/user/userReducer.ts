@@ -1,5 +1,5 @@
 const initialState = {
-    authorized: false
+    authorized: true
 };
 
 export default function reducer(state = initialState) {

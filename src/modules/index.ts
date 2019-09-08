@@ -1,5 +1,5 @@
 import {combineReducers} from "redux";
-import user from "./user/userReducer";
+import user from "modules/user/userReducer";
 
 export type State = {
     user: {

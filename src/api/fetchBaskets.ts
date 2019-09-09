@@ -21,8 +21,21 @@ const BASKETS_QUERY = gql`
         $endDate: String
         $userId: String
     ) {
-        basketRows(data: {order: $order, orderBy: $orderBy, page: $page, userId: $userId, startDate: $startDate, endDate: $endDate}) {
+        basketRows(data: {
+            order: $order,
+            orderBy: $orderBy,
+            page: $page,
+            userId: $userId,
+            startDate: $startDate,
+            endDate: $endDate
+        }) {
             message
+            rows {
+                id
+                purchaseDate
+                items
+                total
+            }
             metadata {
                 page
                 order
@@ -31,17 +44,20 @@ const BASKETS_QUERY = gql`
                 startDate,
                 endDate
             }
-            rows {
-                id
-                purchaseDate
-                items
-                total
-            }
         }
     }
 `;
 
-export default async function fetchBaskets(data: any, jwt: string) {
+type BasketsFetchArgs = {
+    order?: string;
+    orderBy?: string;
+    page?: number;
+    startDate?: Date;
+    endDate?: Date;
+    userId?: string;
+};
+
+export default async function fetchBaskets(data: BasketsFetchArgs, jwt: string) {
     let response;
     try {
         response = await client.query({

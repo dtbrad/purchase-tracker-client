@@ -31,8 +31,8 @@ export function getInitialBaskets(): BasketsThunkResult<FetchBasketsResult> {
             const userId = returnUserId(token);
             try {
                 const {rows, metadata} = await fetchBaskets({userId}, token);
-                console.log({rows, metadata});
-                return await dispatch(didGetInitialBaskets({
+
+                return dispatch(didGetInitialBaskets({
                     byId: reduceBaskets(rows),
                     metadata: {
                         order: "desc",

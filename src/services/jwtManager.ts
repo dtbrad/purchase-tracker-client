@@ -27,8 +27,6 @@ export function returnUserId(token: string | null) {
         const decodedToken: DecodedToken = decode(token);
         return decodedToken.sub;
     }
-
-    return false;
 }
 
 export function validToken(token: string | null) {

@@ -24,12 +24,12 @@ export type BasketsById = {
 };
 
 export type Row = {
-    unit: string;
+    interval: string;
     total: number
 };
 
 export type BasketsChart = {
-    unit?: string;
+    intervalUnit?: string;
     rows?: Row[]
 }
 

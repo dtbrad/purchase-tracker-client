@@ -1,10 +1,11 @@
 import {
     LoginActionConstants,
     STATUS,
-    LoginAction
+    LoginAction,
+    LoginState
 } from "./loginTypes";
 
-export const initialState = {
+export const initialState: LoginState = {
     status: STATUS.IDLE
 };
 

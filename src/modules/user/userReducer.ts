@@ -1,4 +1,4 @@
-import {DID_LOGIN, DID_LOGOUT} from "modules/login/loginTypes";
+import {LoginActionConstants} from "modules/login/loginTypes";
 
 const initialState = {
     authorized: false
@@ -6,11 +6,11 @@ const initialState = {
 
 export default function reducer(state = initialState, action: any) {
     switch (action.type) {
-        case DID_LOGIN:
+        case LoginActionConstants.DID_LOGIN:
             return {
                 authorized: true
             };
-        case DID_LOGOUT:
+        case LoginActionConstants.DID_LOGOUT:
             return {
                 authorized: false
             };

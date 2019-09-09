@@ -1,14 +1,14 @@
 import {
     LoginActionConstants,
     STATUS,
-    LoginActions
+    LoginAction
 } from "./loginTypes";
 
 export const initialState = {
     status: STATUS.IDLE
 };
 
-export default function reducer(state = initialState, action: LoginActions) {
+export default function reducer(state = initialState, action: LoginAction) {
     switch (action.type) {
         case LoginActionConstants.WILL_LOGIN:
             return {

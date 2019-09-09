@@ -1,5 +1,5 @@
 import {connect} from "react-redux";
-import {logOut} from "modules/login/loginActions";
+import {logOut} from "modules/logout/logoutActions";
 import Navigation from "./Navigation";
 import {selectIsUserAuthorized} from "modules/user/userSelectors";
 import {State} from "modules";

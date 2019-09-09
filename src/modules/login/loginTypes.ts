@@ -1,8 +1,14 @@
+import {ThunkAction} from "redux-thunk";
+import {AppState} from "modules";
+
+export type LoginState = {
+    status: string
+}
+
 export enum LoginActionConstants {
     WILL_LOGIN = "WILL_LOGIN",
     DID_LOGIN = "DID_LOGIN",
-    DID_FAIL_TO_LOGIN = "DID_FAIL_TO_LOGIN",
-    DID_LOGOUT = "DID_LOGOUT",
+    DID_FAIL_TO_LOGIN = "DID_FAIL_TO_LOGIN"
 }
 
 export const STATUS = {
@@ -16,7 +22,7 @@ export type LoginCredentials = {
     password: string;
 };
 
-export type LoginAction = {
+export type DidLoginAction = {
     type: typeof LoginActionConstants.DID_LOGIN;
     payload: string;
 };
@@ -26,18 +32,16 @@ export type WillLoginAction = {
     payload: string;
 };
 
-export type LogoutAction = {
-    type: typeof LoginActionConstants.DID_LOGOUT;
-    payload: string;
-};
-
-export type FailedToLoginAction = {
+export type DidFailToLoginAction = {
     type: typeof LoginActionConstants.DID_FAIL_TO_LOGIN;
     payload: string;
 };
 
-export type LoginActions =
-    | LoginAction
+export type LoginAction =
+    | DidLoginAction
     | WillLoginAction
-    | LogoutAction
-    | FailedToLoginAction;
+    | DidFailToLoginAction;
+
+export type LoginThunkResult<R> = ThunkAction<R, AppState, undefined, LoginAction>;
+
+export type SubmitLoginResult = Promise<DidLoginAction | DidFailToLoginAction>;

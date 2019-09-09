@@ -1,14 +1,12 @@
 import {combineReducers} from "redux";
 import login from "modules/login/loginReducer";
 import user from "modules/user/userReducer";
+import {LoginState} from "modules/login/loginTypes";
+import {UserState} from "modules/user/userTypes";
 
 export type State = {
-    user: {
-        authorized: boolean
-    };
-    login: {
-        status: string
-    }
+    user: UserState;
+    login: LoginState
 };
 
 const reducer = combineReducers({

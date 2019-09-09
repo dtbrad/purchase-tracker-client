@@ -1,43 +1,38 @@
 import {
     LoginActionConstants,
     STATUS,
-    LoginActions,
-    LoginCredentials
+    LoginCredentials,
+    WillLoginAction,
+    DidLoginAction,
+    DidFailToLoginAction,
+    LoginThunkResult,
+    SubmitLoginResult
 } from "modules/login/loginTypes";
 import submitLogin from "api/submitLogin";
-import {setToken, removeToken} from "services/jwtManager";
-import {ThunkAction} from "redux-thunk";
-import {AppState} from "modules";
+import {setToken} from "services/jwtManager";
 
-export function willLogin() {
+export function willLogin(): WillLoginAction {
     return {
         type: LoginActionConstants.WILL_LOGIN,
         payload: STATUS.PENDING
     };
 }
 
-export function didLogin() {
+export function didLogin(): DidLoginAction {
     return {
         type: LoginActionConstants.DID_LOGIN,
         payload: STATUS.IDLE
     };
 }
 
-export function didFailToLogin() {
+export function didFailToLogin(): DidFailToLoginAction {
     return {
         type: LoginActionConstants.DID_FAIL_TO_LOGIN,
         payload: STATUS.FAILED
     };
 }
 
-export function didLogOut() {
-    return {
-        type: LoginActionConstants.DID_LOGOUT,
-        payload: STATUS.IDLE
-    };
-}
-
-export function login(credentials: LoginCredentials): ThunkAction<void, AppState, null, LoginActions> {
+export function login(credentials: LoginCredentials): LoginThunkResult<SubmitLoginResult> {
     return async function (dispatch) {
         dispatch(willLogin());
 
@@ -52,12 +47,5 @@ export function login(credentials: LoginCredentials): ThunkAction<void, AppState
         }
 
         return dispatch(didFailToLogin());
-    };
-}
-
-export function logOut(): ThunkAction<void, AppState, null, LoginActions> {
-    return async function (dispatch) {
-        await removeToken();
-        return dispatch(didLogOut());
     };
 }

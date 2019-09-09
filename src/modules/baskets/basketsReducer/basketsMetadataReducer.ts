@@ -1,8 +1,13 @@
-import {BasketsMetadata} from "modules/baskets/basketsTypes";
+import {BasketsMetadata, BasketsActionConstants, BasketsAction} from "modules/baskets/basketsTypes";
 
 export const initialState: BasketsMetadata = {};
 
 
-export default function reducer(state = initialState) {
-    return state;
+export default function reducer(state = initialState, action: BasketsAction) {
+    switch (action.type) {
+        case BasketsActionConstants.DID_GET_INITIAL_BASKETS:
+            return action.payload.metadata;
+        default:
+            return state;
+    }
 }

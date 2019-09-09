@@ -1,7 +1,5 @@
-import {LogoutActionConstants, LogoutAction} from "modules/logout/logoutTypes";
-import {ThunkAction} from "redux-thunk";
+import {LogoutActionConstants, LogoutThunkResult, LogoutResult} from "modules/logout/logoutTypes";
 import {removeToken} from "services/jwtManager";
-import {AppState} from "modules";
 
 export function didLogOut() {
     return {
@@ -9,9 +7,9 @@ export function didLogOut() {
     };
 }
 
-export function logOut(): ThunkAction<void, AppState, null, LogoutAction> {
-    return function (dispatch) {
-        removeToken();
+export function logOut(): LogoutThunkResult<LogoutResult> {
+    return async function (dispatch) {
+        await removeToken();
         return dispatch(didLogOut());
     };
 }

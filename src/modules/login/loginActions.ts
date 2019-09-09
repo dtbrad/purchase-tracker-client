@@ -10,6 +10,7 @@ import {
 } from "modules/login/loginTypes";
 import submitLogin from "api/submitLogin";
 import {setToken} from "services/jwtManager";
+import {getInitialBaskets} from "modules/baskets/basketsActions";
 
 export function willLogin(): WillLoginAction {
     return {
@@ -41,6 +42,7 @@ export function login(credentials: LoginCredentials): LoginThunkResult<SubmitLog
         try {
             response = await submitLogin(credentials);
             setToken(response.data.login.token);
+            await dispatch(getInitialBaskets());
             return dispatch(didLogin());
         } catch (error) {
             console.log(error);

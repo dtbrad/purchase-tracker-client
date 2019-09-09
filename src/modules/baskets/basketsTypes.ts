@@ -1,3 +1,7 @@
+import {ThunkAction} from "redux-thunk";
+import {AppState} from "modules";
+import {LogoutAction} from "modules/logout/logoutTypes";
+
 export type BasketsMetadata = {
     order?: string;
     orderBy?: string;
@@ -41,3 +45,34 @@ export type BasketsState = {
     chart: BasketsChart;
 }
 
+export enum BasketsActionConstants {
+    DID_GET_INITIAL_BASKETS = "DID_GET_INITIAL_BASKETS",
+    DID_FAIL_TO_FETCH_BASKETS = "DID_FAIL_TO_FETCH_BASKETS"
+}
+
+export type BasketsActionPayload = {
+    byId: BasketsById;
+    metadata: BasketsMetadata;
+};
+
+export type InitialBasketsActionPayload = BasketsActionPayload & {
+    datePicker: BasketsDatePicker;
+}
+
+export type DidGetInitialBasketsAction = {
+    type: typeof BasketsActionConstants.DID_GET_INITIAL_BASKETS;
+    payload: InitialBasketsActionPayload;
+}
+
+export type DidFailToFetchBasketsAction = {
+    type: typeof BasketsActionConstants.DID_FAIL_TO_FETCH_BASKETS;
+}
+
+export type BasketsAction =
+    | DidGetInitialBasketsAction
+    | DidFailToFetchBasketsAction
+    | LogoutAction
+
+export type BasketsThunkResult<R> = ThunkAction<R, AppState, undefined, BasketsAction>;
+
+export type FetchBasketsResult = Promise<DidGetInitialBasketsAction | DidFailToFetchBasketsAction | LogoutAction>;

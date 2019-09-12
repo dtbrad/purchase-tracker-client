@@ -1,5 +1,5 @@
 import {connect} from "react-redux";
-import React from "react";
+import React, {useEffect} from "react";
 import {selectLoginStatus} from "modules/login/loginSelectors";
 import {Alert, Container, Col, Jumbotron} from "react-bootstrap";
 import {BrowserRouter, Route, Redirect} from "react-router-dom";
@@ -9,20 +9,34 @@ import Navigation from "components/Navigation";
 import "components/App.css";
 import {State} from "modules";
 import {selectIsUserAuthorized} from "modules/user/userSelectors";
+import {initializeApp} from "modules/initialization/initializationActions";
+import {selectIsInitialized} from "modules/initialization/initializationSelectors";
+
+// alias initializeApp as setupApp to avoid eslint shadow rule violation
+const mapDispatchToProps = {
+    setupApp: initializeApp
+};
 
 function mapStateToProps(state: State) {
     return {
         authorized: selectIsUserAuthorized(state),
-        loginStatus: selectLoginStatus(state)
+        loginStatus: selectLoginStatus(state),
+        initialized: selectIsInitialized(state)
     };
 }
 
 type AppProps = {
     authorized: boolean;
     loginStatus: string;
+    setupApp: any;
+    initialized: boolean;
 }
 
-function App({authorized, loginStatus}: AppProps) {
+function App({initialized, loginStatus, setupApp, authorized}: AppProps) {
+    useEffect(function () {
+        setupApp();
+    }, [setupApp]);
+
     const title = (
         <Jumbotron>
             <h1 className="text-center">Purchase Tracker</h1>
@@ -59,15 +73,18 @@ function App({authorized, loginStatus}: AppProps) {
     );
 
     return (
-        <Container>
-            <Col>
-                { authorized
-                    ? authorizedApp
-                    : unauthorizedApp
-                }
-            </Col>
-        </Container>
+        initialized
+            ? (
+                <Container>
+                    <Col>
+                        { authorized
+                            ? authorizedApp
+                            : unauthorizedApp
+                        }
+                    </Col>
+                </Container>
+            ) : null
     );
 }
 
-export default connect(mapStateToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App);

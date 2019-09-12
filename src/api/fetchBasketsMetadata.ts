@@ -39,7 +39,6 @@ export default async function fetchBaskets(data: {userId: string}, jwt: string) 
             variables: data
 
         });
-        console.log({response: response.data.basketsMetadata});
         return response.data.basketsMetadata;
     } catch (e) {
         return undefined;

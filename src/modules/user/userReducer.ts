@@ -1,19 +1,24 @@
-import {LoginActionConstants, DidLoginAction} from "modules/login/loginTypes";
-import {LogoutActionConstants, DidLogoutAction} from "modules/logout/logoutTypes";
+import {LoginActionConstants} from "modules/login/loginTypes";
+import {LogoutActionConstants} from "modules/logout/logoutTypes";
+import {IS_AUTHENTICATED, UserActions} from "modules/user/userTypes";
 
 const initialState = {
-    authorized: false
+    authenticated: false
 };
 
-export default function reducer(state = initialState, action: DidLoginAction | DidLogoutAction) {
+export default function reducer(state = initialState, action: UserActions) {
     switch (action.type) {
         case LoginActionConstants.DID_LOGIN:
             return {
-                authorized: true
+                authenticated: true
+            };
+        case IS_AUTHENTICATED:
+            return {
+                authenticated: action.payload
             };
         case LogoutActionConstants.DID_LOGOUT:
             return {
-                authorized: false
+                authenticated: false
             };
         default:
             return state;

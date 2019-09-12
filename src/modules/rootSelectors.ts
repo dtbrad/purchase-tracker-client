@@ -7,3 +7,7 @@ export function selectUser(state: State) {
 export function selectLogin(state: State) {
     return state.login;
 }
+
+export function selectInitialization(state: State) {
+    return state.initialization;
+}

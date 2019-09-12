@@ -1,7 +1,7 @@
 import {createSelector} from "reselect";
 import {selectUser} from "modules/rootSelectors";
 
-export const selectIsUserAuthorized = createSelector(
+export const selectIsUserAuthenticated = createSelector(
     selectUser,
-    ({authorized}) => authorized
+    ({authenticated}) => authenticated
 );

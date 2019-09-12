@@ -3,7 +3,7 @@ import {NavLink, withRouter, RouteComponentProps} from "react-router-dom";
 import {Navbar, Nav} from "react-bootstrap";
 
 type NavigationProps = RouteComponentProps<any> & {
-    authorized: boolean;
+    authenticated: boolean;
     logOut: () => void;
 };
 
@@ -11,7 +11,7 @@ function Navigation(props: NavigationProps) {
     return (
         <Navbar>
             <Nav>
-                {!props.authorized && (
+                {!props.authenticated && (
                     <React.Fragment>
                         <Nav.Link as={NavLink}
                             to="/login">
@@ -19,7 +19,7 @@ function Navigation(props: NavigationProps) {
                         </Nav.Link>
                     </React.Fragment>
                 )}
-                {props.authorized && (
+                {props.authenticated && (
                     <React.Fragment>
                         <Nav.Link
                             as={NavLink}

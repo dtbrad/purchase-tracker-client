@@ -1,12 +1,12 @@
 import {connect} from "react-redux";
 import {logOut} from "modules/logout/logoutActions";
 import Navigation from "./Navigation";
-import {selectIsUserAuthorized} from "modules/user/userSelectors";
+import {selectIsUserAuthenticated} from "modules/user/userSelectors";
 import {State} from "modules";
 
 function mapStateToProps(state: State) {
     return {
-        authorized: selectIsUserAuthorized(state)
+        authenticated: selectIsUserAuthenticated(state)
     };
 }
 const mapDispatchToProps = {

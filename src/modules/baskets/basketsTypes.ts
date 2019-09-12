@@ -19,6 +19,10 @@ export type Basket = {
     total: number;
 };
 
+export type BasketsMap = {
+    [id: string]: Basket;
+};
+
 export type BasketsById = {
     [id: string]: Basket;
 };
@@ -47,13 +51,25 @@ export type BasketsState = {
 
 export enum BasketsActionConstants {
     DID_GET_INITIAL_BASKETS = "DID_GET_INITIAL_BASKETS",
-    DID_FAIL_TO_FETCH_BASKETS = "DID_FAIL_TO_FETCH_BASKETS"
+    DID_FAIL_TO_FETCH_BASKETS = "DID_FAIL_TO_FETCH_BASKETS",
+    DID_GET_BASKETS_CHART = "DID_GET_BASKETS_CHART",
+    DID_FAIL_TO_FETCH_BASKETS_CHART = "DID_FAIL_TO_FETCH_BASKETS_CHART"
 }
 
 export type BasketsActionPayload = {
     byId: BasketsById;
     metadata: BasketsMetadata;
 };
+
+export type DidGetBasketsChartAction = {
+    type: typeof BasketsActionConstants.DID_GET_BASKETS_CHART;
+    payload: BasketChartsActionPayload
+}
+
+export type BasketChartsActionPayload = {
+    intervalUnit: string;
+    rows: Row[];
+}
 
 export type InitialBasketsActionPayload = BasketsActionPayload & {
     datePicker: BasketsDatePicker;
@@ -68,6 +84,10 @@ export type DidFailToFetchBasketsAction = {
     type: typeof BasketsActionConstants.DID_FAIL_TO_FETCH_BASKETS;
 }
 
+export type DidFailToFetchBasketsChartAction = {
+    type: typeof BasketsActionConstants.DID_FAIL_TO_FETCH_BASKETS_CHART
+}
+
 export type BasketsAction =
     | DidGetInitialBasketsAction
     | DidFailToFetchBasketsAction
@@ -76,3 +96,14 @@ export type BasketsAction =
 export type BasketsThunkResult<R> = ThunkAction<R, AppState, undefined, BasketsAction>;
 
 export type FetchBasketsResult = Promise<DidGetInitialBasketsAction | DidFailToFetchBasketsAction | LogoutAction>;
+
+export type BasketsChartAction =
+    | DidGetBasketsChartAction
+    | DidFailToFetchBasketsChartAction
+    | LogoutAction
+
+export type BasketsChartThunkResult<R> = ThunkAction<R, AppState, undefined, BasketsChartAction>;
+
+export type FetchBasketsChartResult =Promise<
+    DidGetBasketsChartAction | DidFailToFetchBasketsChartAction | LogoutAction
+>;

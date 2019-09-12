@@ -1,3 +1,9 @@
+import {ThunkAction} from "redux-thunk";
+import {AppState} from "modules";
+import {DidLogoutAction} from "modules/logout/logoutTypes";
+
+// domain -----------------------------------------------------------
+
 export type BasketsMetadata = {
     order?: string;
     orderBy?: string;
@@ -5,7 +11,7 @@ export type BasketsMetadata = {
     endDate?: Date;
     startDate?: Date;
     totalPages?: number;
-    unit?: string
+    intervalUnit?: string
 }
 
 export type Basket = {
@@ -20,14 +26,11 @@ export type BasketsById = {
 };
 
 export type Row = {
-    unit: string;
+    interval: string;
     total: number
 };
 
-export type BasketsChart = {
-    unit?: string;
-    rows?: Row[]
-}
+export type BasketsChart = Row[];
 
 export type BasketsDatePicker = {
     startDate?: Date;
@@ -40,4 +43,31 @@ export type BasketsState = {
     datePicker: BasketsDatePicker;
     chart: BasketsChart;
 }
+
+// action creators ---------------------------------------------------
+
+export enum BasketsActionConstants {
+    DID_GET_BASKETS_METADATA = "DID_GET_BASKETS_METADATA",
+    DID_FAIL_TO_GET_BASKETS_METADATA = "DID_FAIL_TO_GET_BASKETS_METADATA"
+}
+
+export type DidGetBasketsMetadataAction = {
+    type: typeof BasketsActionConstants.DID_GET_BASKETS_METADATA;
+    payload: BasketsMetadata;
+}
+
+export type DidFailToGetBasketsMetadataAction = {
+    type: typeof BasketsActionConstants.DID_FAIL_TO_GET_BASKETS_METADATA;
+}
+
+export type BasketsMetadataAction =
+    | DidGetBasketsMetadataAction
+    | DidFailToGetBasketsMetadataAction;
+
+export type BasketsMetadataThunkResult<R> = ThunkAction<
+    R, AppState, undefined, BasketsMetadataAction | DidLogoutAction
+>;
+
+export type FetchBasketsMetadataResult = Promise<BasketsMetadataAction | DidLogoutAction>
+
 

@@ -51,9 +51,18 @@ export enum BasketsActionConstants {
     DID_FAIL_TO_GET_BASKETS_METADATA = "DID_FAIL_TO_GET_BASKETS_METADATA"
 }
 
+export type BasketsMetadataPayload = {
+    order: string;
+    orderBy: string;
+    totalPages: number;
+    startDate: Date;
+    endDate: Date
+    intervalUnit: string;
+}
+
 export type DidGetBasketsMetadataAction = {
     type: typeof BasketsActionConstants.DID_GET_BASKETS_METADATA;
-    payload: BasketsMetadata;
+    payload: BasketsMetadataPayload;
 }
 
 export type DidFailToGetBasketsMetadataAction = {

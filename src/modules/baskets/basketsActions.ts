@@ -1,16 +1,23 @@
-import {BasketsActionConstants, BasketsMetadata, BasketsMetadataThunkResult, FetchBasketsMetadataResult, DidFailToGetBasketsMetadataAction, DidGetBasketsMetadataAction} from "modules/baskets/basketsTypes";
+import {BasketsActionConstants, BasketsMetadataThunkResult, FetchBasketsMetadataResult, DidFailToGetBasketsMetadataAction, DidGetBasketsMetadataAction} from "modules/baskets/basketsTypes";
 import {getToken, validToken, returnUserId} from "services/jwtManager";
-// import {logOut, didLogOut} from "modules/login/loginActions";
 import fetchBasketsMetadata from "api/fetchBasketsMetadata";
 import {logOut} from "modules/logout/logoutActions";
 import moment from "moment";
+
+
+type DidGetBasketsMetadataArgs = {
+    totalPages: number;
+    startDate: Date;
+    endDate: Date;
+    intervalUnit: string;
+}
 
 export function didGetBasketsMetadata({
     totalPages,
     startDate,
     endDate,
     intervalUnit
-}: BasketsMetadata): DidGetBasketsMetadataAction {
+}: DidGetBasketsMetadataArgs): DidGetBasketsMetadataAction {
     return {
         type: BasketsActionConstants.DID_GET_BASKETS_METADATA,
         payload: {
@@ -30,7 +37,6 @@ export function didFailToGetBasketsMetadata(): DidFailToGetBasketsMetadataAction
     };
 }
 
-
 function computeUnit(startDate: Date, endDate: Date) {
     const range = moment(endDate).diff(moment(startDate), "days");
     if (range > 90) {
@@ -41,7 +47,6 @@ function computeUnit(startDate: Date, endDate: Date) {
     }
     return "day";
 }
-
 
 export function getBasketsMetadata(): BasketsMetadataThunkResult<FetchBasketsMetadataResult> {
     return async function (dispatch) {

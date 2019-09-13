@@ -1,4 +1,13 @@
-import {BasketsActionConstants, GetBasketsMetadataThunkResult, FetchBasketsMetadataResult, DidFailToGetBasketsMetadataAction, DidGetBasketsMetadataAction} from "modules/baskets/basketsTypes";
+import {
+    BasketsActionConstants,
+    GetBasketsMetadataThunkResult,
+    FetchBasketsMetadataResult,
+    DidFailToGetBasketsMetadataAction,
+    DidGetBasketsMetadataAction,
+    DidGetInitialBasketsAction,
+    GetInitialBasketsThunkResult,
+    FetchInitialBasketsResult
+} from "modules/baskets/basketsTypes";
 import {getToken, validToken, returnUserId} from "services/jwtManager";
 import fetchBasketsMetadata from "api/fetchBasketsMetadata";
 import {logOut} from "modules/logout/logoutActions";
@@ -37,6 +46,12 @@ export function didFailToGetBasketsMetadata(): DidFailToGetBasketsMetadataAction
     };
 }
 
+export function didGetInitialBaskets(): DidGetInitialBasketsAction {
+    return {
+        type: BasketsActionConstants.DID_GET_INITIAL_BASKETS
+    };
+}
+
 function computeUnit(startDate: Date, endDate: Date) {
     const range = moment(endDate).diff(moment(startDate), "days");
     if (range > 90) {
@@ -65,6 +80,18 @@ export function getBasketsMetadata(): GetBasketsMetadataThunkResult<FetchBaskets
             }
         }
 
+        return dispatch(logOut());
+    };
+}
+
+export function getInitialBaskets(): GetInitialBasketsThunkResult<FetchInitialBasketsResult> {
+    return async function (dispatch) {
+        const token = getToken();
+        if (typeof token === "string" && validToken(token)) {
+            const userId = returnUserId(token);
+            console.log({token, userId});
+            return dispatch(didGetInitialBaskets());
+        }
         return dispatch(logOut());
     };
 }

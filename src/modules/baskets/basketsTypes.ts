@@ -48,7 +48,8 @@ export type BasketsState = {
 
 export enum BasketsActionConstants {
     DID_GET_BASKETS_METADATA = "DID_GET_BASKETS_METADATA",
-    DID_FAIL_TO_GET_BASKETS_METADATA = "DID_FAIL_TO_GET_BASKETS_METADATA"
+    DID_FAIL_TO_GET_BASKETS_METADATA = "DID_FAIL_TO_GET_BASKETS_METADATA",
+    DID_GET_INITIAL_BASKETS = "DID_GET_INITIAL_BASKETS"
 }
 
 export type DidGetBasketsMetadataPayload = {
@@ -69,14 +70,24 @@ export type DidFailToGetBasketsMetadataAction = {
     type: typeof BasketsActionConstants.DID_FAIL_TO_GET_BASKETS_METADATA;
 }
 
-export type BasketsMetadataAction =
+export type GetBasketsMetadataAction =
     | DidGetBasketsMetadataAction
     | DidFailToGetBasketsMetadataAction;
 
 export type GetBasketsMetadataThunkResult<R> = ThunkAction<
-    R, AppState, undefined, BasketsMetadataAction | DidLogoutAction
+    R, AppState, undefined, GetBasketsMetadataAction | DidLogoutAction
 >;
 
-export type FetchBasketsMetadataResult = Promise<BasketsMetadataAction | DidLogoutAction>
+export type FetchBasketsMetadataResult = Promise<GetBasketsMetadataAction | DidLogoutAction>
 
+export type DidGetInitialBasketsAction = {
+    type: typeof BasketsActionConstants.DID_GET_INITIAL_BASKETS
+}
 
+type GetInitialBasketsAction = DidGetInitialBasketsAction;
+
+export type GetInitialBasketsThunkResult<R> = ThunkAction<
+    R, AppState, undefined, GetInitialBasketsAction | DidLogoutAction
+>;
+
+export type FetchInitialBasketsResult = Promise<GetInitialBasketsAction | DidLogoutAction>

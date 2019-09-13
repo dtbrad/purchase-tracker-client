@@ -51,7 +51,7 @@ export enum BasketsActionConstants {
     DID_FAIL_TO_GET_BASKETS_METADATA = "DID_FAIL_TO_GET_BASKETS_METADATA"
 }
 
-export type BasketsMetadataPayload = {
+export type DidGetBasketsMetadataPayload = {
     order: string;
     orderBy: string;
     totalPages: number;
@@ -62,7 +62,7 @@ export type BasketsMetadataPayload = {
 
 export type DidGetBasketsMetadataAction = {
     type: typeof BasketsActionConstants.DID_GET_BASKETS_METADATA;
-    payload: BasketsMetadataPayload;
+    payload: DidGetBasketsMetadataPayload;
 }
 
 export type DidFailToGetBasketsMetadataAction = {
@@ -73,7 +73,7 @@ export type BasketsMetadataAction =
     | DidGetBasketsMetadataAction
     | DidFailToGetBasketsMetadataAction;
 
-export type BasketsMetadataThunkResult<R> = ThunkAction<
+export type GetBasketsMetadataThunkResult<R> = ThunkAction<
     R, AppState, undefined, BasketsMetadataAction | DidLogoutAction
 >;
 

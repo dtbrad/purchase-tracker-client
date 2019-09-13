@@ -1,4 +1,4 @@
-import {BasketsActionConstants, BasketsMetadataThunkResult, FetchBasketsMetadataResult, DidFailToGetBasketsMetadataAction, DidGetBasketsMetadataAction} from "modules/baskets/basketsTypes";
+import {BasketsActionConstants, GetBasketsMetadataThunkResult, FetchBasketsMetadataResult, DidFailToGetBasketsMetadataAction, DidGetBasketsMetadataAction} from "modules/baskets/basketsTypes";
 import {getToken, validToken, returnUserId} from "services/jwtManager";
 import fetchBasketsMetadata from "api/fetchBasketsMetadata";
 import {logOut} from "modules/logout/logoutActions";
@@ -48,7 +48,7 @@ function computeUnit(startDate: Date, endDate: Date) {
     return "day";
 }
 
-export function getBasketsMetadata(): BasketsMetadataThunkResult<FetchBasketsMetadataResult> {
+export function getBasketsMetadata(): GetBasketsMetadataThunkResult<FetchBasketsMetadataResult> {
     return async function (dispatch) {
         const token = getToken();
         if (typeof token === "string" && validToken(token)) {

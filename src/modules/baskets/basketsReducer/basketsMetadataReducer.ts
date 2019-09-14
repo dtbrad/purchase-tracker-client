@@ -4,7 +4,10 @@ import {DidLogoutAction} from "modules/logout/logoutTypes";
 export const initialState: BasketsMetadata = {};
 
 
-export default function reducer(state = initialState, action: GetBasketsMetadataAction | GetInitialBasketsAction | DidLogoutAction) {
+export default function reducer(
+    state = initialState,
+    action: GetBasketsMetadataAction | GetInitialBasketsAction | DidLogoutAction
+) {
     switch (action.type) {
         case BasketsActionConstants.DID_GET_BASKETS_METADATA:
             return action.payload;

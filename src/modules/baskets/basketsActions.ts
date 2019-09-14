@@ -106,11 +106,10 @@ export function getInitialBaskets(): GetInitialBasketsThunkResult<FetchInitialBa
             const userId = returnUserId(token);
             const startDate = selectPickedStartDate(getState());
             const endDate = selectPickedEndDate(getState());
-            console.log({token, userId, startDate, endDate});
 
             try {
-                const {baskets, metadata} = userId && startDate && endDate && await fetchBaskets({userId, startDate, endDate}, token);
-                console.log({baskets, metadata});
+                const {baskets, metadata} = userId && startDate && endDate &&
+                    await fetchBaskets({userId, startDate, endDate}, token);
                 return dispatch(didGetInitialBaskets({baskets, metadata}));
 
             } catch (error) {
@@ -118,6 +117,12 @@ export function getInitialBaskets(): GetInitialBasketsThunkResult<FetchInitialBa
             }
         }
         return dispatch(logOut());
+    };
+}
+
+export function sortBaskets(): any {
+    return {
+        type: "SORTED"
     };
 }
 

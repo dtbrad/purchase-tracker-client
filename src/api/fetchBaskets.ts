@@ -45,7 +45,9 @@ const BASKETS_QUERY = gql`
 type FetchBasketsArgs = {
     userId: string;
     startDate: Date;
-    endDate: Date
+    endDate: Date;
+    order?: string;
+    orderBy?: string;
 }
 export default async function fetchBaskets(data: FetchBasketsArgs, jwt: string) {
     let response;

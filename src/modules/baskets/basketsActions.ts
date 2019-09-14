@@ -1,4 +1,6 @@
 import {
+    Basket,
+    BasketsById,
     BasketsActionConstants,
     GetBasketsMetadataThunkResult,
     FetchBasketsMetadataResult,
@@ -7,15 +9,27 @@ import {
     DidGetInitialBasketsAction,
     DidFailToGetInitialBasketsAction,
     GetInitialBasketsThunkResult,
-    FetchInitialBasketsResult
+    FetchInitialBasketsResult,
+    DidGetSortedBasketsPayload,
+    DidGetSortedBasketsAction,
+    DidFailToGetSortedBasketsAction,
+    GetSortedBasketsThunkResult,
+    FetchSortedBasketsResult
+
 } from "modules/baskets/basketsTypes";
 import {getToken, validToken, returnUserId} from "services/jwtManager";
 import fetchBasketsMetadata from "api/fetchBasketsMetadata";
 import fetchBaskets from "api/fetchBaskets";
 import {logOut} from "modules/logout/logoutActions";
 import moment from "moment";
-import {selectPickedEndDate, selectPickedStartDate} from "modules/baskets/basketsSelectors";
+import {selectPickedEndDate, selectPickedStartDate, selectBasketsMetadata} from "modules/baskets/basketsSelectors";
 
+function reduceBaskets(basketsArr: Basket[]) {
+    return basketsArr.reduce(function (target: BasketsById, basket: Basket) {
+        target[basket.id] = basket;
+        return target;
+    }, {});
+}
 
 type DidGetBasketsMetadataArgs = {
     totalPages: number;
@@ -51,7 +65,7 @@ export function didFailToGetBasketsMetadata(): DidFailToGetBasketsMetadataAction
 }
 
 type DidGetInitialBasketsArgs = {
-    baskets: any;
+    byId: BasketsById;
     metadata: any
 }
 export function didGetInitialBaskets(payload: DidGetInitialBasketsArgs): DidGetInitialBasketsAction {
@@ -64,6 +78,19 @@ export function didGetInitialBaskets(payload: DidGetInitialBasketsArgs): DidGetI
 export function didFailToGetInitialBaskets(): DidFailToGetInitialBasketsAction {
     return {
         type: BasketsActionConstants.DID_FAIL_TO_GET_INITIAL_BASKETS
+    };
+}
+
+export function didGetSortedBaskets(payload: DidGetSortedBasketsPayload): DidGetSortedBasketsAction {
+    return {
+        type: BasketsActionConstants.DID_GET_SORTED_BASKETS,
+        payload
+    };
+}
+
+export function didFailToGetSortedBaskets(): DidFailToGetSortedBasketsAction {
+    return {
+        type: BasketsActionConstants.DID_FAIL_TO_GET_SORTED_BASKETS
     };
 }
 
@@ -110,7 +137,11 @@ export function getInitialBaskets(): GetInitialBasketsThunkResult<FetchInitialBa
             try {
                 const {baskets, metadata} = userId && startDate && endDate &&
                     await fetchBaskets({userId, startDate, endDate}, token);
-                return dispatch(didGetInitialBaskets({baskets, metadata}));
+
+                return dispatch(didGetInitialBaskets({
+                    byId: reduceBaskets(baskets),
+                    metadata
+                }));
 
             } catch (error) {
                 return dispatch(didFailToGetInitialBaskets());
@@ -120,10 +151,51 @@ export function getInitialBaskets(): GetInitialBasketsThunkResult<FetchInitialBa
     };
 }
 
-export function sortBaskets(): any {
-    return {
-        type: "SORTED"
+export function sortBaskets(category: string): GetSortedBasketsThunkResult<FetchSortedBasketsResult> {
+    return async function (dispatch, getState) {
+        const token = getToken();
+
+        if (typeof token === "string" && validToken(token)) {
+            const userId = returnUserId(token);
+            const {order, orderBy, startDate, endDate} = selectBasketsMetadata(getState());
+
+            const newOrder = order === "desc" && orderBy === category
+                ? "asc"
+                : "desc";
+
+            try {
+                const {baskets, metadata} = userId && startDate && endDate && await fetchBaskets(
+                    {
+                        order: newOrder,
+                        orderBy: category,
+                        startDate,
+                        endDate,
+                        userId
+                    },
+                    token
+                );
+
+                return dispatch(didGetSortedBaskets({
+                    byId: reduceBaskets(baskets),
+                    metadata: {
+                        order: metadata.order,
+                        orderBy: metadata.orderBy,
+                        page: 1
+                    }
+                }));
+            } catch {
+                return dispatch(didFailToGetSortedBaskets());
+            }
+        }
+
+        return dispatch(logOut());
     };
+
 }
 
+// export function sortBaskets(): any {
+//     return {
+//         type: "SORTED"
+//     };
+// }
 

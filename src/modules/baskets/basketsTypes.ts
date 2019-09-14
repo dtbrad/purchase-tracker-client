@@ -50,7 +50,9 @@ export enum BasketsActionConstants {
     DID_GET_BASKETS_METADATA = "DID_GET_BASKETS_METADATA",
     DID_FAIL_TO_GET_BASKETS_METADATA = "DID_FAIL_TO_GET_BASKETS_METADATA",
     DID_GET_INITIAL_BASKETS = "DID_GET_INITIAL_BASKETS",
-    DID_FAIL_TO_GET_INITIAL_BASKETS = "DID_FAIL_TO_GET_INITIAL_BASKETS"
+    DID_FAIL_TO_GET_INITIAL_BASKETS = "DID_FAIL_TO_GET_INITIAL_BASKETS",
+    DID_GET_SORTED_BASKETS = "DID_GET_SORTED_BASKETS",
+    DID_FAIL_TO_GET_SORTED_BASKETS = "DID_FAIL_TO_GET_SORTED_BASKETS"
 }
 
 // ---------------------------------- for fetching basketsMetadata
@@ -82,19 +84,16 @@ export type GetBasketsMetadataThunkResult<R> = ThunkAction<
 
 export type FetchBasketsMetadataResult = Promise<GetBasketsMetadataAction | DidLogoutAction>
 
-// ---------------------------------- for fetching baskets
+// ---------------------------------- for fetching initial baskets
 
 
 export type DidGetInitialBasketsPayload = {
-    baskets: Basket[];
+    byId: BasketsById;
     metadata: BasketsMetadata;
 }
 export type DidGetInitialBasketsAction = {
     type: typeof BasketsActionConstants.DID_GET_INITIAL_BASKETS;
-    payload: {
-        baskets: any;
-        metadata: any;
-    }
+    payload: DidGetInitialBasketsPayload;
 }
 
 export type DidFailToGetInitialBasketsAction = {
@@ -108,3 +107,28 @@ export type GetInitialBasketsThunkResult<R> = ThunkAction<
 >;
 
 export type FetchInitialBasketsResult = Promise<GetInitialBasketsAction | DidLogoutAction>
+
+
+// ---------------------------------- for fetching sorted baskets
+
+export type DidGetSortedBasketsPayload = {
+    byId: BasketsById;
+    metadata: BasketsMetadata ;
+}
+
+export type DidGetSortedBasketsAction = {
+    type: typeof BasketsActionConstants.DID_GET_SORTED_BASKETS;
+    payload: DidGetSortedBasketsPayload
+}
+
+export type DidFailToGetSortedBasketsAction = {
+    type: typeof BasketsActionConstants.DID_FAIL_TO_GET_SORTED_BASKETS
+}
+
+export type GetSortedBasketsAction = DidGetSortedBasketsAction | DidFailToGetSortedBasketsAction;
+
+export type GetSortedBasketsThunkResult<R> = ThunkAction<
+    R, AppState, undefined, GetSortedBasketsAction | DidLogoutAction
+>;
+
+export type FetchSortedBasketsResult = Promise<GetSortedBasketsAction | DidLogoutAction>

@@ -6,7 +6,7 @@ import {BasketsMetadata} from "modules/baskets/basketsTypes";
 type BasketsTablePropsArgs = {
     basketIds: string[];
     metadata: BasketsMetadata;
-    sortBaskets: (value: string) => void;
+    sortBaskets: ({category}:{category: string}) => void;
 };
 
 function BasketsTable({basketIds, sortBaskets}: BasketsTablePropsArgs) {
@@ -20,17 +20,17 @@ function BasketsTable({basketIds, sortBaskets}: BasketsTablePropsArgs) {
             <Table size="lg">
                 <thead>
                     <tr>
-                        <th onClick={() => sortBaskets("date")}>
+                        <th onClick={() => sortBaskets({category: "date"})}>
                             <span className="table-heading">
                                 Date
                             </span>
                         </th>
-                        <th onClick={() => sortBaskets("items")}>
+                        <th onClick={() => sortBaskets({category: "items"})}>
                             <span className="table-heading">
                                 Items
                             </span>
                         </th>
-                        <th onClick={() => sortBaskets("total")}>
+                        <th onClick={() => sortBaskets({category: "total"})}>
                             <span className="table-heading">
                                 Total
                             </span>

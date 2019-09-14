@@ -3,7 +3,7 @@ import {
     InitializationAction
 } from "modules/initialization/initializationTypes";
 import {isAuthenticated} from "modules/user/userActions";
-import {getBasketsMetadata, getInitialBaskets} from "modules/baskets/basketsActions";
+import {getBasketsMetadata, getBaskets} from "modules/baskets/basketsActions";
 import {selectIsUserAuthenticated} from "modules/user/userSelectors";
 import {ThunkAction} from "redux-thunk";
 
@@ -19,7 +19,7 @@ export function initializeApp(): ThunkAction<void, any, null, any> {
         await dispatch(isAuthenticated());
         if (selectIsUserAuthenticated(getState())) {
             await dispatch(getBasketsMetadata());
-            await dispatch(getInitialBaskets({}));
+            await dispatch(getBaskets({}));
         }
         return dispatch({type: DID_INITIALIZE_APP});
     };

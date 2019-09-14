@@ -5,7 +5,7 @@ import {
     selectBasketsMetadata
 } from "modules/baskets/basketsSelectors";
 import {State} from "modules";
-import {sortBaskets} from "modules/baskets/basketsActions";
+import {getBaskets} from "modules/baskets/basketsActions";
 
 function mapStateToProps(state: State) {
     return {
@@ -15,7 +15,7 @@ function mapStateToProps(state: State) {
 }
 
 const mapDispatchToProps = {
-    sortBaskets
+    sortBaskets: getBaskets
 };
 
 export default connect(

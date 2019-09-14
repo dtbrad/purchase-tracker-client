@@ -49,8 +49,8 @@ export type BasketsState = {
 export enum BasketsActionConstants {
     DID_GET_BASKETS_METADATA = "DID_GET_BASKETS_METADATA",
     DID_FAIL_TO_GET_BASKETS_METADATA = "DID_FAIL_TO_GET_BASKETS_METADATA",
-    DID_GET_INITIAL_BASKETS = "DID_GET_INITIAL_BASKETS",
-    DID_FAIL_TO_GET_INITIAL_BASKETS = "DID_FAIL_TO_GET_INITIAL_BASKETS",
+    DID_GET_BASKETS = "DID_GET_BASKETS",
+    DID_FAIL_TO_GET_BASKETS = "DID_FAIL_TO_GET_BASKETS",
     DID_GET_SORTED_BASKETS = "DID_GET_SORTED_BASKETS",
     DID_FAIL_TO_GET_SORTED_BASKETS = "DID_FAIL_TO_GET_SORTED_BASKETS"
 }
@@ -87,48 +87,23 @@ export type FetchBasketsMetadataResult = Promise<GetBasketsMetadataAction | DidL
 // ---------------------------------- for fetching initial baskets
 
 
-export type DidGetInitialBasketsPayload = {
+export type DidGetBasketsPayload = {
     byId: BasketsById;
     metadata: BasketsMetadata;
 }
-export type DidGetInitialBasketsAction = {
-    type: typeof BasketsActionConstants.DID_GET_INITIAL_BASKETS;
-    payload: DidGetInitialBasketsPayload;
+export type DidGetBasketsAction = {
+    type: typeof BasketsActionConstants.DID_GET_BASKETS;
+    payload: DidGetBasketsPayload;
 }
 
-export type DidFailToGetInitialBasketsAction = {
-    type: typeof BasketsActionConstants.DID_FAIL_TO_GET_INITIAL_BASKETS
+export type DidFailToGetBasketsAction = {
+    type: typeof BasketsActionConstants.DID_FAIL_TO_GET_BASKETS
 }
 
-export type GetInitialBasketsAction = DidGetInitialBasketsAction | DidFailToGetInitialBasketsAction;
+export type GetBasketsAction = DidGetBasketsAction | DidFailToGetBasketsAction;
 
-export type GetInitialBasketsThunkResult<R> = ThunkAction<
-    R, AppState, undefined, GetInitialBasketsAction | DidLogoutAction
+export type GetBasketsThunkResult<R> = ThunkAction<
+    R, AppState, undefined, GetBasketsAction | DidLogoutAction
 >;
 
-export type FetchInitialBasketsResult = Promise<GetInitialBasketsAction | DidLogoutAction>
-
-
-// ---------------------------------- for fetching sorted baskets
-
-export type DidGetSortedBasketsPayload = {
-    byId: BasketsById;
-    metadata: BasketsMetadata ;
-}
-
-export type DidGetSortedBasketsAction = {
-    type: typeof BasketsActionConstants.DID_GET_SORTED_BASKETS;
-    payload: DidGetSortedBasketsPayload
-}
-
-export type DidFailToGetSortedBasketsAction = {
-    type: typeof BasketsActionConstants.DID_FAIL_TO_GET_SORTED_BASKETS
-}
-
-export type GetSortedBasketsAction = DidGetSortedBasketsAction | DidFailToGetSortedBasketsAction;
-
-export type GetSortedBasketsThunkResult<R> = ThunkAction<
-    R, AppState, undefined, GetSortedBasketsAction | DidLogoutAction
->;
-
-export type FetchSortedBasketsResult = Promise<GetSortedBasketsAction | DidLogoutAction>
+export type FetchBasketsResult = Promise<GetBasketsAction | DidLogoutAction>

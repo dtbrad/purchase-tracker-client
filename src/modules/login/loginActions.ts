@@ -8,7 +8,7 @@ import {
     LoginThunkResult,
     SubmitLoginResult
 } from "modules/login/loginTypes";
-import {getBasketsMetadata, getInitialBaskets} from "modules/baskets/basketsActions";
+import {getBasketsMetadata, getBaskets} from "modules/baskets/basketsActions";
 import submitLogin from "api/submitLogin";
 import {setToken} from "services/jwtManager";
 
@@ -43,7 +43,7 @@ export function login(credentials: LoginCredentials): LoginThunkResult<SubmitLog
             response = await submitLogin(credentials);
             setToken(response.data.login.token);
             await dispatch(getBasketsMetadata());
-            await dispatch(getInitialBaskets({}));
+            await dispatch(getBaskets({}));
             return dispatch(didLogin());
         } catch (error) {
             console.log(error);

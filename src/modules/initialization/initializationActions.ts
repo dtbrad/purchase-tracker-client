@@ -19,7 +19,7 @@ export function initializeApp(): ThunkAction<void, any, null, any> {
         await dispatch(isAuthenticated());
         if (selectIsUserAuthenticated(getState())) {
             await dispatch(getBasketsMetadata());
-            await dispatch(getInitialBaskets());
+            await dispatch(getInitialBaskets({}));
         }
         return dispatch({type: DID_INITIALIZE_APP});
     };

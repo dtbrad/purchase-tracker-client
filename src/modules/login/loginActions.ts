@@ -43,7 +43,7 @@ export function login(credentials: LoginCredentials): LoginThunkResult<SubmitLog
             response = await submitLogin(credentials);
             setToken(response.data.login.token);
             await dispatch(getBasketsMetadata());
-            await dispatch(getInitialBaskets());
+            await dispatch(getInitialBaskets({}));
             return dispatch(didLogin());
         } catch (error) {
             console.log(error);

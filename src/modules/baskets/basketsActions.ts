@@ -126,17 +126,27 @@ export function getBasketsMetadata(): GetBasketsMetadataThunkResult<FetchBaskets
     };
 }
 
-export function getInitialBaskets(): GetInitialBasketsThunkResult<FetchInitialBasketsResult> {
+
+type getInitialBasketsArgs = {
+    category?: string;
+}
+export function getInitialBaskets({category}: getInitialBasketsArgs): GetInitialBasketsThunkResult<FetchInitialBasketsResult> {
     return async function (dispatch, getState) {
         const token = getToken();
         if (typeof token === "string" && validToken(token)) {
             const userId = returnUserId(token);
-            const startDate = selectPickedStartDate(getState());
-            const endDate = selectPickedEndDate(getState());
+            const {order, orderBy, startDate, endDate} = selectBasketsMetadata(getState());
+            let computedOrder = order;
+
+            if (category) {
+                computedOrder = order === "desc" && orderBy === category
+                    ? "asc"
+                    : "desc";
+            }
 
             try {
                 const {baskets, metadata} = userId && startDate && endDate &&
-                    await fetchBaskets({userId, startDate, endDate}, token);
+                    await fetchBaskets({userId, startDate, endDate, order: computedOrder}, token);
 
                 return dispatch(didGetInitialBaskets({
                     byId: reduceBaskets(baskets),

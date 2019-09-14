@@ -5,13 +5,16 @@ import {
     DidFailToGetBasketsMetadataAction,
     DidGetBasketsMetadataAction,
     DidGetInitialBasketsAction,
+    DidFailToGetInitialBasketsAction,
     GetInitialBasketsThunkResult,
     FetchInitialBasketsResult
 } from "modules/baskets/basketsTypes";
 import {getToken, validToken, returnUserId} from "services/jwtManager";
 import fetchBasketsMetadata from "api/fetchBasketsMetadata";
+import fetchBaskets from "api/fetchBaskets";
 import {logOut} from "modules/logout/logoutActions";
 import moment from "moment";
+import {selectPickedEndDate, selectPickedStartDate} from "modules/baskets/basketsSelectors";
 
 
 type DidGetBasketsMetadataArgs = {
@@ -30,6 +33,7 @@ export function didGetBasketsMetadata({
     return {
         type: BasketsActionConstants.DID_GET_BASKETS_METADATA,
         payload: {
+            page: 1,
             order: "desc",
             orderBy: "date",
             totalPages,
@@ -46,9 +50,20 @@ export function didFailToGetBasketsMetadata(): DidFailToGetBasketsMetadataAction
     };
 }
 
-export function didGetInitialBaskets(): DidGetInitialBasketsAction {
+type DidGetInitialBasketsArgs = {
+    baskets: any;
+    metadata: any
+}
+export function didGetInitialBaskets(payload: DidGetInitialBasketsArgs): DidGetInitialBasketsAction {
     return {
-        type: BasketsActionConstants.DID_GET_INITIAL_BASKETS
+        type: BasketsActionConstants.DID_GET_INITIAL_BASKETS,
+        payload
+    };
+}
+
+export function didFailToGetInitialBaskets(): DidFailToGetInitialBasketsAction {
+    return {
+        type: BasketsActionConstants.DID_FAIL_TO_GET_INITIAL_BASKETS
     };
 }
 
@@ -85,12 +100,22 @@ export function getBasketsMetadata(): GetBasketsMetadataThunkResult<FetchBaskets
 }
 
 export function getInitialBaskets(): GetInitialBasketsThunkResult<FetchInitialBasketsResult> {
-    return async function (dispatch) {
+    return async function (dispatch, getState) {
         const token = getToken();
         if (typeof token === "string" && validToken(token)) {
             const userId = returnUserId(token);
-            console.log({token, userId});
-            return dispatch(didGetInitialBaskets());
+            const startDate = selectPickedStartDate(getState());
+            const endDate = selectPickedEndDate(getState());
+            console.log({token, userId, startDate, endDate});
+
+            try {
+                const {baskets, metadata} = userId && startDate && endDate && await fetchBaskets({userId, startDate, endDate}, token);
+                console.log({baskets, metadata});
+                return dispatch(didGetInitialBaskets({baskets, metadata}));
+
+            } catch (error) {
+                return dispatch(didFailToGetInitialBaskets());
+            }
         }
         return dispatch(logOut());
     };

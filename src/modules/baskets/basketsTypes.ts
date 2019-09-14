@@ -49,9 +49,11 @@ export type BasketsState = {
 export enum BasketsActionConstants {
     DID_GET_BASKETS_METADATA = "DID_GET_BASKETS_METADATA",
     DID_FAIL_TO_GET_BASKETS_METADATA = "DID_FAIL_TO_GET_BASKETS_METADATA",
-    DID_GET_INITIAL_BASKETS = "DID_GET_INITIAL_BASKETS"
+    DID_GET_INITIAL_BASKETS = "DID_GET_INITIAL_BASKETS",
+    DID_FAIL_TO_GET_INITIAL_BASKETS = "DID_FAIL_TO_GET_INITIAL_BASKETS"
 }
 
+// ---------------------------------- for fetching basketsMetadata
 export type DidGetBasketsMetadataPayload = {
     order: string;
     orderBy: string;
@@ -63,7 +65,7 @@ export type DidGetBasketsMetadataPayload = {
 
 export type DidGetBasketsMetadataAction = {
     type: typeof BasketsActionConstants.DID_GET_BASKETS_METADATA;
-    payload: DidGetBasketsMetadataPayload;
+    payload: BasketsMetadata;
 }
 
 export type DidFailToGetBasketsMetadataAction = {
@@ -80,11 +82,26 @@ export type GetBasketsMetadataThunkResult<R> = ThunkAction<
 
 export type FetchBasketsMetadataResult = Promise<GetBasketsMetadataAction | DidLogoutAction>
 
+// ---------------------------------- for fetching baskets
+
+
+export type DidGetInitialBasketsPayload = {
+    baskets: Basket[];
+    metadata: BasketsMetadata;
+}
 export type DidGetInitialBasketsAction = {
-    type: typeof BasketsActionConstants.DID_GET_INITIAL_BASKETS
+    type: typeof BasketsActionConstants.DID_GET_INITIAL_BASKETS;
+    payload: {
+        baskets: any;
+        metadata: any;
+    }
 }
 
-type GetInitialBasketsAction = DidGetInitialBasketsAction;
+export type DidFailToGetInitialBasketsAction = {
+    type: typeof BasketsActionConstants.DID_FAIL_TO_GET_INITIAL_BASKETS
+}
+
+export type GetInitialBasketsAction = DidGetInitialBasketsAction | DidFailToGetInitialBasketsAction;
 
 export type GetInitialBasketsThunkResult<R> = ThunkAction<
     R, AppState, undefined, GetInitialBasketsAction | DidLogoutAction

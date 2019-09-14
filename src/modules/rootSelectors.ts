@@ -11,3 +11,7 @@ export function selectLogin(state: State) {
 export function selectInitialization(state: State) {
     return state.initialization;
 }
+
+export function selectBaskets(state: State) {
+    return state.baskets;
+}
